@@ -1086,7 +1086,9 @@ def train(args: argparse.Namespace, custom_metrics_logger: Optional[Callable] = 
                     param.grad_req = 'add'
 
         kvstore = mx.kvstore.create(args.kvstore)
-
+        from bytescheduler.mxnet.kvstore import ScheduledKVStore
+        kvstore = ScheduledKVStore(kvstore)
+        
         if horovod_mpi.using_horovod():
             # Horovod provides a trainer that subclasses gluon.Trainer and uses
             # allreduce to collect averaged gradients across all workers for
